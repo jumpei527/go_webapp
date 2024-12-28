@@ -1,8 +1,8 @@
 package main
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
