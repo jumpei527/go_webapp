@@ -215,3 +215,15 @@ func TestPostgresDBRepoUpdateUser(t *testing.T) {
 		t.Errorf("expected updated record to have first name Jane and email jane@smith.com, but got %s %s", user.FirstName, user.Email)
 	}
 }
+
+func TestPostgresDBRepoDeleteUser(t *testing.T) {
+	err := testRepo.DeleteUser(2)
+	if err != nil {
+		t.Errorf("error deleting user id 2: %s", err)
+	}
+
+	_, err = testRepo.GetUser(2)
+	if err == nil {
+		t.Error("retrieved user id 2, who should have been deleted")
+	}
+}
