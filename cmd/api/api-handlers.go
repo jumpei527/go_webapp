@@ -65,7 +65,8 @@ func (app *application) refresh(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		app.errorJSON(w, err, http.StatusBadGateway)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
 	}
 
 	if time.Unix(claims.ExpiresAt.Unix(), 0).Sub(time.Now()) > 30*time.Second {
