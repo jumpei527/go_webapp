@@ -26,18 +26,21 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	user, err := app.DB.GetUserByEmail(creds.Username)
 	if err != nil {
 		app.errorJSON(w, errors.New("unauthorized"), http.StatusUnauthorized)
+		return
 	}
 
 	// check password
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password))
 	if err != nil {
 		app.errorJSON(w, errors.New("unauthorized"), http.StatusUnauthorized)
+		return
 	}
 
 	// generate tokens
 	tokenPairs, err := app.generateTokenPair(user)
 	if err != nil {
 		app.errorJSON(w, errors.New("unauthorized"), http.StatusUnauthorized)
+		return
 	}
 
 	// send token to user
@@ -52,7 +55,7 @@ func (app *application) allUsers(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (app *application) GetUser(w http.ResponseWriter, r *http.Request) {
+func (app *application) getUser(w http.ResponseWriter, r *http.Request) {
 
 }
 

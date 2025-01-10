@@ -34,7 +34,7 @@ func (app *application) routes() http.Handler {
 		// use auth middleware
 
 		mux.Get("/", app.allUsers)
-		mux.Get("/{userID}", app.GetUser)
+		mux.Get("/{userID}", app.getUser)
 		mux.Delete("/{userID}", app.deleteUser)
 		mux.Put("/", app.insertUser)
 		mux.Patch("/", app.updateUser)
