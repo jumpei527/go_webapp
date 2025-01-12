@@ -75,8 +75,14 @@
     let refreshTokenDisplay = document.getElementById("refresh");
     let logoutBtn = document.getElementById("logout");
 
+    document.addEventListener("DOMContentLoaded", function() {
+        // call refreshTokens; this will, by default, log the user in
+        // if he or she has a valid, non-expired __Host-refresh_token cookie.
+        refreshTokens();
+    })
 
-    login.addEventListener("click", function() {
+
+    loginBtn.addEventListener("click", function() {
         const payload = {
             email: document.getElementById("email").value,
             password: document.getElementById("password").value,
@@ -104,6 +110,29 @@
                 alert(error);
             })
     })
+
+    function refreshTokens() {
+        // we'll send a get request which includes the __Host-refresh-token cookie if it exists
+        const requestOptions = {
+            method: "GET",
+            credentials: "include",
+        }
+
+        fetch(`/web/refresh-token`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.access_token) {
+                    access_token = data.access_token;
+                    refresh_token = data.refresh_token;
+                    setUI(true)
+                } else {
+                    setUI(false)
+                }
+            })
+            .catch(error => {
+                console.log("user is not logged in")
+            })
+    }
 
     function setUI(loggedIn) {
         if (loggedIn) {
